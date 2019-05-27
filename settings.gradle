@@ -1,1 +1,1 @@
-include ':ui', ':presentation', ':remote', ':local'
+include ':ui', ':presentation', ':remote', ':local', ':domain', ':data'
