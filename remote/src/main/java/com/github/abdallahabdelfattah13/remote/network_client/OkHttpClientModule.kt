@@ -1,8 +1,15 @@
 package com.github.abdallahabdelfattah13.remote.network_client
 
 import com.github.abdallahabdelfattah13.remote.network_client.authenticators.RefreshTokenAuthenticator
+import com.github.abdallahabdelfattah13.remote.network_client.authenticators.RefreshTokenAuthenticatorModule
+import com.github.abdallahabdelfattah13.remote.network_client.interceptors.DaggerConstants
+import com.github.abdallahabdelfattah13.remote.network_client.interceptors.InterceptorsModule
+import dagger.Module
+import dagger.Provides
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import javax.inject.Named
+import javax.inject.Singleton
 
 
 /**
@@ -10,9 +17,18 @@ import okhttp3.OkHttpClient
  * The D. GmbH,
  * Cairo, Egypt.
  */
-class MainOkHttpClient {
+@Module(
+    includes = [
+        RefreshTokenAuthenticatorModule::class,
+        InterceptorsModule::class
+    ]
+)
+class OkHttpClientModule {
 
+    @Provides
+    @Singleton
     fun providesOkHttpClient(
+        @Named(DaggerConstants.TOKEN_INTERCEPTOR)
         tokenInterceptor: Interceptor,
         refreshTokenAuthenticator: RefreshTokenAuthenticator
     ): OkHttpClient {
