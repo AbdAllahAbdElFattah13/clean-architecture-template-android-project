@@ -4,6 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import dagger.Module
+import dagger.Provides
+import javax.inject.Singleton
 
 
 /**
@@ -18,16 +21,16 @@ import androidx.room.RoomDatabase
         //endregion
     ]
 )
-abstract class MainDatabase : RoomDatabase() {
+abstract class RoomDatabaseClass : RoomDatabase() {
 
     //region define all of your dao getters here.
     //endregion
 
     companion object {
         @Volatile
-        private var INSTANCE: MainDatabase? = null
+        private var INSTANCE: RoomDatabaseClass? = null
 
-        fun getDatabase(appContext: Context): MainDatabase {
+        fun getDatabase(appContext: Context): RoomDatabaseClass {
             val tempInstance = INSTANCE
             if (tempInstance != null) {
                 return tempInstance
@@ -35,7 +38,7 @@ abstract class MainDatabase : RoomDatabase() {
             synchronized(this) {
                 val instance = Room.databaseBuilder(
                     appContext.applicationContext,
-                    MainDatabase::class.java,
+                    RoomDatabaseClass::class.java,
                     "Main_database"
                 ).build()
                 INSTANCE = instance
@@ -43,4 +46,13 @@ abstract class MainDatabase : RoomDatabase() {
             }
         }
     }
+}
+
+
+@Module
+class RoomDatabaseModule() {
+
+    @Provides
+    @Singleton
+    fun providesRoomDatabase(appContext: Context): RoomDatabaseClass = RoomDatabaseClass.getDatabase(appContext)
 }
