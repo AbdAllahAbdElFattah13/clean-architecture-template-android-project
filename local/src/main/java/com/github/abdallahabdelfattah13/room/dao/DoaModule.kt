@@ -1,6 +1,6 @@
 package com.github.abdallahabdelfattah13.room.dao
 
-import com.github.abdallahabdelfattah13.room.RoomDatabaseClass
+import com.github.abdallahabdelfattah13.room.RoomDatabaseModule
 import dagger.Module
 
 
@@ -11,7 +11,7 @@ import dagger.Module
  */
 @Module(
     includes = [
-        RoomDatabaseClass::class
+        RoomDatabaseModule::class
     ]
 )
 class DoaModule {

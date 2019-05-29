@@ -1,8 +1,7 @@
 apply plugin: 'com.android.application'
-
-apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 28
@@ -20,17 +19,33 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+    implementation project(":context")
+    implementation project(":ui")
     implementation project(":presentation")
+    implementation project(":domain")
+    implementation project(":data")
+    implementation project(":local")
+    implementation project(":remote")
 
     implementation 'io.reactivex.rxjava2:rxjava:2.2.4'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
 
+
+    //dagger, for DI.
+    implementation 'com.google.dagger:dagger:2.20'
+    kapt 'com.google.dagger:dagger-compiler:2.20'
+
+    implementation 'androidx.multidex:multidex:2.0.1'
 
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.core:core-ktx:1.0.2'
