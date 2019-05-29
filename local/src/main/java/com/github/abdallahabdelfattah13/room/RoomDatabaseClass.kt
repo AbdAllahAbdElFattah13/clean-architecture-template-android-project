@@ -1,9 +1,8 @@
 package com.github.abdallahabdelfattah13.room
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
+import androidx.room.*
+import com.github.abdallahabdelfattah13.context.ContextModule
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -17,6 +16,7 @@ import javax.inject.Singleton
 @Database(
     version = 1,
     entities = [
+        DummyEntityToPassBuildForNow::class
         //region add all of your models/entities here.
         //endregion
     ]
@@ -48,9 +48,15 @@ abstract class RoomDatabaseClass : RoomDatabase() {
     }
 }
 
+@Entity
+data class DummyEntityToPassBuildForNow(@PrimaryKey val dummyPrimaryKeyToPassBuildForNow: String)
 
-@Module
-class RoomDatabaseModule() {
+@Module(
+    includes = [
+        ContextModule::class
+    ]
+)
+class RoomDatabaseModule {
 
     @Provides
     @Singleton
