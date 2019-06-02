@@ -28,6 +28,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation project(":context")
 
@@ -35,10 +36,10 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.2.4'
 
     // Room components
-    def roomVersion = '2.1.0-beta01'
-    implementation "androidx.room:room-runtime:$roomVersion"
+    def roomVersion = '2.1.0-rc01'
+    api "androidx.room:room-runtime:$roomVersion"
     implementation "androidx.room:room-ktx:$roomVersion"
-    implementation "android.arch.persistence.room:rxjava2:$roomVersion"
+    implementation "androidx.room:room-rxjava2:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
     androidTestImplementation "androidx.room:room-testing:$roomVersion"
 
