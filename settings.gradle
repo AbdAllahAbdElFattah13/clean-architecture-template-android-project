@@ -1,1 +1,1 @@
-include ':main-module', ':presentation', ':remote', ':local', ':domain', ':data', ':ui', ':context'
+include ':ui', ':presentation', ':remote', ':local', ':domain', ':data', ':context'
