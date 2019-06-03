@@ -1,4 +1,4 @@
-package com.github.abdallahabdelfattah13.presentation
+package com.github.abdallahabdelfattah13.presentation.view_models
 
 import androidx.lifecycle.ViewModel
 import io.reactivex.Completable
