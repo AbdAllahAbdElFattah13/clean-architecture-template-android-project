@@ -6,6 +6,7 @@ import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
+import javax.inject.Inject
 import javax.inject.Singleton
 
 
@@ -14,14 +15,14 @@ import javax.inject.Singleton
  * The D. GmbH,
  * Cairo, Egypt.
  */
-class RefreshTokenAuthenticator : Authenticator {
+class RefreshTokenAuthenticator @Inject constructor() : Authenticator {
     override fun authenticate(route: Route?, response: Response): Request? {
         return response.request()
     }
 }
 
 @Module
-class RefreshTokenAuthenticatorModule() {
+class RefreshTokenAuthenticatorModule {
 
     @Provides
     @Singleton
