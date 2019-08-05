@@ -1,1 +1,1 @@
-include ':ui', ':presentation', ':remote', ':local', ':domain', ':data', ':context', ':device'
+include ':ui', ':presentation', ':remote', ':local', ':domain', ':data', ':context', ':device', ':image_loader'
