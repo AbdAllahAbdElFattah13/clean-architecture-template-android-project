@@ -5,6 +5,7 @@ import com.github.abdallahabdelfattah13.data.RepositoriesModule
 import com.github.abdallahabdelfattah13.domain.UseCasesModule
 import com.github.abdallahabdelfattah13.presentation.ViewModelsFactoryModule
 import dagger.Component
+import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
 
@@ -23,4 +24,7 @@ import javax.inject.Singleton
     ]
 )
 interface AppComponent {
+
+    fun getOkHttpClient(): OkHttpClient
+
 }
