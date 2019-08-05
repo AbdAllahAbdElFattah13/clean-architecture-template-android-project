@@ -3,14 +3,11 @@
 package com.github.abdallahabdelfattah13.data.util
 
 import androidx.annotation.WorkerThread
-import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.BehaviorSubject
 
 
 /**
@@ -24,17 +21,8 @@ abstract class OfflineFirstResource<ResultType, RemoteType>
     workScheduler: Scheduler, mainScheduler: Scheduler
 ) {
 
-    private val resultSubject: BehaviorSubject<Resource<ResultType>> = BehaviorSubject.create()
-    private val result: Flowable<Resource<ResultType>> = resultSubject.toFlowable(BackpressureStrategy.LATEST)
-
-    //when do we need to disposable this exactly?
-    private val disposable: Disposable
-
-    init {
-
-        resultSubject.onNext(Resource.loading())
-
-        disposable = dbFlowable
+    private val result: Flowable<Resource<ResultType>> =
+        dbFlowable
             .subscribeOn(workScheduler)
 
             // will throw in case of closing the stream
@@ -42,18 +30,20 @@ abstract class OfflineFirstResource<ResultType, RemoteType>
             // but since room never closes the stream
             // until we dispose it "I guess!",
             //I think we are good to go!
-            .singleOrError()
+            .take(1)
 
             .observeOn(mainScheduler)
-            .flatMap { localResult ->
-                //call shouldFetch?
-                resultSubject.onNext(Resource.localSuccess(localResult))
-                apiSingle
-                    .doOnError {
-                        resultSubject.onNext(Resource.error(localResult, it, it.message ?: "unknown error"))
-                    }
+            .map { localData ->
+                Resource.localSuccess(localData)
             }
-            .toFlowable() //do we really need this?
+
+            .observeOn(workScheduler)
+            .flatMap { localData ->
+                apiSingle.doOnError { t ->
+                    Resource.error(localData, t, t.message ?: "")
+                }
+                    .toFlowable()
+            }
 
             .observeOn(workScheduler)
             .flatMap { remoteData ->
@@ -62,15 +52,15 @@ abstract class OfflineFirstResource<ResultType, RemoteType>
             }
 
             .observeOn(mainScheduler)
-            .flatMap { localData ->
-                resultSubject.onNext(Resource.remoteSuccess(localData))
-                dbFlowable
-            }
-            .subscribe { localUpdate ->
-                resultSubject.onNext(Resource.localUpdate(localUpdate))
+            .map { localData ->
+                Resource.remoteSuccess(localData)
             }
 
-    }
+            .observeOn(mainScheduler)
+            .flatMap { dbFlowable }
+            .map {
+                Resource.localUpdate(it)
+            }
 
     protected open fun onFetchFailed() {}
 
