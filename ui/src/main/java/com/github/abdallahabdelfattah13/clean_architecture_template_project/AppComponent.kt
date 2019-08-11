@@ -5,6 +5,7 @@ import com.github.abdallahabdelfattah13.data.RepositoriesModule
 import com.github.abdallahabdelfattah13.domain.UseCasesModule
 import com.github.abdallahabdelfattah13.presentation.ViewModelsFactoryModule
 import dagger.Component
+import io.thed.image_loader.ImageLoaderModule
 import javax.inject.Singleton
 
 
@@ -19,7 +20,8 @@ import javax.inject.Singleton
         ContextModule::class,
         UseCasesModule::class,
         RepositoriesModule::class,
-        ViewModelsFactoryModule::class
+        ViewModelsFactoryModule::class,
+        ImageLoaderModule::class
     ]
 )
 interface AppComponent {
