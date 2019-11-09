@@ -1,5 +1,6 @@
 package com.github.abdallahabdelfattah13.clean_architecture_template_project
 
+import com.github.abdallahabdelfattah13.clean_architecture_template_project.Schedulers.SchedulersModule
 import com.github.abdallahabdelfattah13.context.ContextModule
 import com.github.abdallahabdelfattah13.data.RepositoriesModule
 import com.github.abdallahabdelfattah13.domain.UseCasesModule
@@ -21,7 +22,8 @@ import javax.inject.Singleton
         UseCasesModule::class,
         RepositoriesModule::class,
         ViewModelsFactoryModule::class,
-        ImageLoaderModule::class
+        ImageLoaderModule::class,
+        SchedulersModule::class
     ]
 )
 interface AppComponent {
